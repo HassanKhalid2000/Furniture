@@ -19,7 +19,7 @@ const NavBar = () => {
 
   return (
     <>
-      <nav className="flex p-5 text-xl  justify-between">
+      <nav className="flex p-5 text-xl items-center justify-between">
         <div>
           <FaStore />
         </div>
@@ -42,9 +42,9 @@ const NavBar = () => {
           </ul>
         </div>
         <div className="flex space-x-5">
-          <button>
+          <Link href={"/MyCart"}>
             <MdOutlineShoppingCart />
-          </button>
+          </Link>
           <button>
             <FaRegUser />
           </button>
