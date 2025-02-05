@@ -1,6 +1,5 @@
 import { UserModel } from "../Model/User";
-import bcrypt from "bcrypt"
-
+import bcrypt from "bcrypt";
 
 interface IRegiter {
   fullName: string;
@@ -34,14 +33,22 @@ export const Register = async ({
   await newUser.save();
   return { data: "Account Created Successfuly", statusCode: 200 };
 };
-interface ILogin{
-    email:string;
-    password:string;
+interface ILogin {
+  email: string;
+  password: string;
 }
-export const Login = async ({email,password}:ILogin) => {
-    const findUser = await UserModel.findOne({email})
-    if(!findUser){
-      return {data:"wrong email or password",statusCode:400}
-    }
-    const passwordMatch  = password===findUser.password
+export const Login = async ({ email, password }: ILogin) => {
+  const findUser = await UserModel.findOne({ email });
+  if (!findUser) {
+    return { data: "wrong email or password", statusCode: 400 };
+  }
+  const passwordMatch = password === findUser.password;
+};
+
+export const GetAllUsers = async () => {
+  const userData = await UserModel.find();
+  if (!userData) {
+    return { data: "no data found", statusCode: 400 };
+  }
+  return { data: userData, statusCode: 200 };
 };

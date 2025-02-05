@@ -1,5 +1,5 @@
 import express from "express"
-import { Login, Register } from "../Services/UserService";
+import { GetAllUsers, Login, Register } from "../Services/UserService";
 import { UserModel } from "../Model/User";
 const router=express.Router()
 
@@ -15,4 +15,8 @@ router.post('/signup',async(req,res)=>{
     res.status(statusCode).send(data)
 })
 
+router.get('/',async(req,res)=>{
+ const {data,statusCode} = await GetAllUsers() 
+ res.status(statusCode).send(data)  
+})
 export default router

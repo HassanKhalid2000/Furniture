@@ -15,7 +15,6 @@ const NavBar = () => {
     { title: "contact us", path: "/ContactUs" },
   ];
   const currentPath = usePathname();
-  console.log(currentPath);
 
   return (
     <>
