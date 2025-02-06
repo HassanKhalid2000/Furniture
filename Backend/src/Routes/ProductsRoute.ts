@@ -1,12 +1,11 @@
 import express from "express";
-import { ProductModel } from "../Model/Product";
 import { CreateNewProduct, GetAllProducts } from "../Services/ProductService";
 const router = express.Router();
 
 //* Get all products
 router.get("/", async (req, res) => {
-  const { data, statusCode } = await GetAllProducts();
-  res.status(statusCode).send(data);
+  const products = await GetAllProducts();
+  res.status(200).send(products);
 });
 //* Add New Product
 router.post("/new-product", async (req, res) => {
@@ -20,6 +19,5 @@ router.post("/new-product", async (req, res) => {
   });
   res.status(statusCode).send(data);
 });
-
 
 export default router;
