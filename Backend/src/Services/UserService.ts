@@ -1,6 +1,6 @@
 import { UserModel } from "../Model/User";
 import bcrypt from "bcrypt";
-
+import jwt from "jsonwebtoken";
 //* Get All Users
 export const GetAllUsers = async () => {
   const userData = await UserModel.find();
@@ -40,7 +40,10 @@ export const Register = async ({
     avatar,
   });
   await newUser.save();
-  return { data: "Account Created Successfuly", statusCode: 200 };
+  return {
+    data: generateJWT({ fullName, phoneNumber, address, email, avatar }),
+    statusCode: 200,
+  };
 };
 //* User Login
 interface ILogin {
@@ -57,5 +60,18 @@ export const Login = async ({ email, password }: ILogin) => {
   if (!passwordMatch) {
     return { data: "wrong email or password", statusCode: 400 };
   }
-  return { data: findUser, statusCode: 200 };
+  return {
+    data: generateJWT({
+      email,
+      fullName: findUser.fullName,
+      phoneNumber: findUser.phoneNumber,
+      address: findUser.address,
+      avatar: findUser.avatar,
+    }),
+    statusCode: 200,
+  };
+};
+//* Generate JsonWebToken
+const generateJWT = (data: any) => {
+  return jwt.sign(data, "EDA5BB72B5356FBA727C82C7AA4B8");
 };
