@@ -50,7 +50,6 @@ interface ILogin {
   email: string;
   password: string;
 }
-// TODO: Create MiddleWare
 export const Login = async ({ email, password }: ILogin) => {
   const findUser = await UserModel.findOne({ email });
   if (!findUser) {
