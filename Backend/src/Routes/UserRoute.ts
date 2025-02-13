@@ -1,6 +1,6 @@
 import express from "express";
 import { GetAllUsers, Login, Register } from "../Services/UserService";
-import { UserModel } from "../Model/User";
+import { UserModel } from "../Model/UserModel";
 const router = express.Router();
 
 //* Login

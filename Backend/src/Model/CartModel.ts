@@ -1,5 +1,5 @@
 import mongoose, { Document, ObjectId, Schema } from "mongoose";
-import { IProduct } from "./Product";
+import { IProduct } from "./ProductModel";
 
 const cartStatusEnum = ["active", "completed"];
 

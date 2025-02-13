@@ -1,4 +1,4 @@
-import { IProduct, ProductModel } from "../Model/Product";
+import { IProduct, ProductModel } from "../Model/ProductModel";
 
 //* Get all Products
 export const GetAllProducts = async () => {

@@ -1,6 +1,7 @@
 import express from "express";
 import {
   AddItemToCart,
+  Checkout,
   ClearCart,
   DeleteItemFromCart,
   GetActiveCartForUser,
@@ -8,7 +9,7 @@ import {
 } from "../Services/CartService";
 import ValidateJWT, { ExtendRequest } from "../Middleware/ValidateJWT";
 const router = express.Router();
-
+//* Get Active Cart For User
 router.get("/", ValidateJWT, async (req: ExtendRequest, res) => {
   const userId = req.user._id;
   const cart = await GetActiveCartForUser({ userId });
@@ -59,4 +60,10 @@ router.delete('/',ValidateJWT,async(req:ExtendRequest,res)=>{
   const {data,statusCode}= await ClearCart({userId})
   res.status(statusCode).send(data)
 }) 
+//* Checkout
+router.post('/checkout',ValidateJWT,async(req:ExtendRequest,res)=>{
+  const userId = req.user._id
+  const{data,statusCode}=await Checkout({userId})
+  res.status(statusCode).send(data)
+})
 export default router;

@@ -1,4 +1,4 @@
-import { UserModel } from "../Model/User";
+import { UserModel } from "../Model/UserModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 //* Get All Users

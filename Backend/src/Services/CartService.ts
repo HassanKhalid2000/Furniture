@@ -1,5 +1,7 @@
-import { CartModel } from "../Model/Cart";
-import { ProductModel } from "../Model/Product";
+import { CartModel } from "../Model/CartModel";
+import { IOrder, IOrderItem, OrderModel } from "../Model/OrderModel";
+import { ProductModel } from "../Model/ProductModel";
+import { IUser, UserModel } from "../Model/UserModel";
 
 //* Create Active Cart For User
 interface IcreateActiveCartForUser {
@@ -140,4 +142,43 @@ export const ClearCart = async ({ userId }: IClearCart) => {
   cart.totalAmount = 0;
   const updatedCart = await cart.save();
   return { data: updatedCart, statusCode: 200 };
+};
+
+interface ICheckout {
+  userId: string;
+  
+}
+export const Checkout = async ({ userId }: ICheckout) => {
+  const user = await UserModel.findById(userId);
+  if (!user) {
+    return { data: "user Not Found in Database", statusCode: 400 };
+  }
+  const cart = await GetActiveCartForUser({ userId });
+  const orderItems: IOrderItem[] = [];
+  for (const item of cart.items) {
+    const product = await ProductModel.findById(item.product);
+    if (!product) {
+      return { data: "Product not found", statusCode: 400 };
+    }
+    const orderItem: IOrderItem = {
+      ProductTitle: product.ProductTitle,
+      description: product.description,
+      price: item.unitPrice,
+      ProductImage: product.ProductImage,
+      quantity: item.quantity,
+    };
+    orderItems.push(orderItem);
+  }
+  const order = await OrderModel.create({
+    userId,
+    orderItems,
+    fullName: user.fullName,
+    address: user.address,
+    phoneNumber: user.phoneNumber,
+    totalAmount: cart.totalAmount,
+  });
+  await order.save();
+  cart.status = "completed";
+  await cart.save();
+  return { data: order, statusCode: 200 };
 };
