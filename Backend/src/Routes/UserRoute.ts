@@ -5,27 +5,43 @@ const router = express.Router();
 
 //* Login
 router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
-  const { data, statusCode } = await Login({ email, password });
-  res.status(statusCode).send(data);
+  try {
+    const { email, password } = req.body;
+    const { data, statusCode } = await Login({ email, password });
+    res.status(statusCode).send(data);
+  } catch (err) {
+    console.error(err);
+    res.send("Internal server error").status(500);
+  }
 });
 //* Register
 router.post("/signup", async (req, res) => {
-  const { fullName, phoneNumber, address, email, password, avatar } = req.body;
-  const { data, statusCode } = await Register({
-    fullName,
-    phoneNumber,
-    address,
-    email,
-    password,
-    avatar,
-  });
-  res.status(statusCode).send(data);
+  try {
+    const { fullName, phoneNumber, address, email, password, avatar } =
+      req.body;
+    const { data, statusCode } = await Register({
+      fullName,
+      phoneNumber,
+      address,
+      email,
+      password,
+      avatar,
+    });
+    res.status(statusCode).send(data);
+  } catch (err) {
+    console.error(err);
+    res.send("Internal server error").status(500);
+  }
 });
 //* Get All Users
 router.get("/", async (req, res) => {
-  const { data, statusCode } = await GetAllUsers();
-  res.status(statusCode).send(data);
+  try {
+    const { data, statusCode } = await GetAllUsers();
+    res.status(statusCode).send(data);
+  } catch (err) {
+    console.error(err);
+    res.send("Internal server error").status(500);
+  }
 });
 
 export default router;

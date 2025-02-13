@@ -51,25 +51,28 @@ interface ILogin {
   password: string;
 }
 export const Login = async ({ email, password }: ILogin) => {
-  const findUser = await UserModel.findOne({ email });
-  if (!findUser) {
-    return { data: "wrong email or password", statusCode: 400 };
-  }
-  const passwordMatch = await bcrypt.compare(password, findUser.password);
-  if (!passwordMatch) {
-    return { data: "wrong email or password", statusCode: 400 };
-  }
-  return {
-    data: generateJWT({
-      email,
-      fullName: findUser.fullName,
-      phoneNumber: findUser.phoneNumber,
-      address: findUser.address,
-      avatar: findUser.avatar,
-    }),
-    statusCode: 200,
+  try{
+
+    const findUser = await UserModel.findOne({ email });
+    if (!findUser) {
+      return { data: "wrong email or password", statusCode: 400 };
+    }
+    const passwordMatch = await bcrypt.compare(password, findUser.password);
+    if (!passwordMatch) {
+      return { data: "wrong email or password", statusCode: 400 };
+    }
+    return {
+      data: generateJWT({
+        email,
+        fullName: findUser.fullName,
+        phoneNumber: findUser.phoneNumber,
+        address: findUser.address,
+        avatar: findUser.avatar,
+      }),
+      statusCode: 200,
+    };
+  }catch(err){console.error(err);return{data:"Internal server error",statusCode:500}}
   };
-};
 //* Generate JsonWebToken
 const generateJWT = (data: any) => {
   return jwt.sign(data, "EDA5BB72B5356FBA727C82C7AA4B8");
