@@ -75,5 +75,5 @@ export const Login = async ({ email, password }: ILogin) => {
   };
 //* Generate JsonWebToken
 const generateJWT = (data: any) => {
-  return jwt.sign(data, "EDA5BB72B5356FBA727C82C7AA4B8");
+  return jwt.sign(data, process.env.SECRET_KEY||"");
 };
