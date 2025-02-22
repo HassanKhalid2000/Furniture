@@ -63,6 +63,14 @@ export const SeedInitailProducts = async () => {
         price: 100,
         ProductImage: "/decoration-img.png",
       },
+      {
+        ProductTitle: "tabel",
+        description:
+          "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ratione dicta laudantium, dolor velit enim, veniam labore sed at ",
+        stock: 20,
+        price: 700,
+        ProductImage: "/f4.png",
+      }
     ];
     const exsistingProducts = await GetAllProducts();
     if (!exsistingProducts) {

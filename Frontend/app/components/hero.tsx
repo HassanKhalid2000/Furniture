@@ -8,7 +8,7 @@ const Hero = () => {
           <h1 className=" text-center uppercase">
             for all your furniture need
           </h1>
-        </div>
+        </div> 
         <p className="text-justify capitalize">
           Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nam rerum,
           maiores neque iusto odit voluptas vero. Sequi, fuga voluptate tenetur

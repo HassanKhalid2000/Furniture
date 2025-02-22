@@ -46,28 +46,33 @@ export const AddItemToCart = async ({
   productId,
   quantity,
 }: IAddItemToCart) => {
-  const cart = await GetActiveCartForUser({ userId });
-  if (!cart) {
-    return { data: "no cart Found", statusCode: 400 };
+  try {
+    const cart = await GetActiveCartForUser({ userId });
+    if (!cart) {
+      return { data: "no cart Found", statusCode: 400 };
+    }
+    const existsInCart = cart.items.find(
+      (p) => p.product.toString() === productId
+    );
+    if (existsInCart) {
+      return { data: "Item already exits in cart", statusCode: 400 };
+    }
+    const product = await ProductModel.findById(productId);
+    if (!product) {
+      return { data: "product not found", statusCode: 400 };
+    }
+    if (product.stock < quantity) {
+      return { data: "low item for stock", statusCode: 400 };
+    }
+    cart.items.push({ product: productId, quantity, unitPrice: product.price });
+    // update total amount
+    cart.totalAmount += product.price * quantity;
+    const updatedCart = await cart.save();
+    return { data: updatedCart, statusCode: 200 };
+  } catch (err) {
+    console.error(err);
+    return { data: "internal server error", statusCode: 500 };
   }
-  const existsInCart = cart.items.find(
-    (p) => p.product.toString() === productId
-  );
-  if (existsInCart) {
-    return { data: "Item already exits in cart", statusCode: 400 };
-  }
-  const product = await ProductModel.findById(productId);
-  if (!product) {
-    return { data: "product not found", statusCode: 400 };
-  }
-  if (product.stock < quantity) {
-    return { data: "low item for stock", statusCode: 400 };
-  }
-  cart.items.push({ product: productId, quantity, unitPrice: product.price });
-  // update total amount
-  cart.totalAmount += product.price * quantity;
-  const updatedCart = await cart.save();
-  return { data: updatedCart, statusCode: 200 };
 };
 
 //*  Update Item In Cart

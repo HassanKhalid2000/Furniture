@@ -8,7 +8,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const { data, statusCode } = await Login({ email, password });
-    res.status(statusCode).send(data);
+    res.status(statusCode).json(data);
   } catch (err) {
     console.error(err);
     res.send("Internal server error").status(500);
@@ -27,7 +27,7 @@ router.post("/signup", async (req, res) => {
       password,
       avatar,
     });
-    res.status(statusCode).send(data);
+    res.status(statusCode).json(data);
   } catch (err) {
     console.error(err);
     res.send("Internal server error").status(500);
