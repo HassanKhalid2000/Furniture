@@ -5,8 +5,13 @@ import { FaStore } from "react-icons/fa";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
+import { useUserContext } from "./context/userContext";
 
 const NavBar = () => {
+  const {email,token} = useUserContext()
+  console.log("from navbar",{email,token});
+  
+
   const links = [
     { title: "home", path: "/" },
     { title: "about", path: "/About" },

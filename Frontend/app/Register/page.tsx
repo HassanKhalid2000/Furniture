@@ -1,9 +1,10 @@
 "use client";
 import React, { useRef, useState } from "react";
+import { useUserContext } from "../context/userContext";
 
 const Register = () => {
   const [error, setError] = useState("");
-
+  const { login } = useUserContext();
   const fullNameRef = useRef<HTMLInputElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const phoneNumberRef = useRef<HTMLInputElement>(null);
@@ -17,6 +18,17 @@ const Register = () => {
     const email = emailRef.current?.value;
     const password = passwordRef.current?.value;
     const avatar = uploadRef.current?.value;
+    if (
+      !email ||
+      !address ||
+      !phoneNumber ||
+      !password ||
+      !avatar ||
+      !fullName
+    ) {
+      setError("check submitted data");
+      return;
+    }
     const response = await fetch("http://localhost:3001/user/signup", {
       method: "POST",
       headers: {
@@ -35,8 +47,13 @@ const Register = () => {
       setError("unable to register , plese try diffrent creaditantial");
       return;
     }
-    const data = await response.json();
-    console.log(data);
+
+    const token = await response.json();
+    if (!token) {
+      setError("token is not provided");
+    }
+    login(email, token);
+    console.log(token);
   };
   return (
     <>
